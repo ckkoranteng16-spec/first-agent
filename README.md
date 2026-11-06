@@ -1,98 +1,126 @@
-Writing
+# Gemini Function-Calling Agent
 
----
+A Python-based AI chatbot powered by Google's Gemini API. The project combines a function-calling agent, a FastAPI backend, and a personal portfolio frontend.
 
-title: Gemini Function Calling Agent
-emoji: 🤖
-colorFrom: blue
-colorTo: purple
-sdk: gradio
-app_file: app.py
-pinned: false
+## Project Overview
 
-Gemini Function Calling Agent
+This project demonstrates how an LLM can interact with predefined Python functions to perform tasks and return useful responses.
 
-A Python-based AI agent that uses Google's Gemini API and function calling to interact with custom Python functions.
+The application has three main components:
 
-The project demonstrates how Large Language Models (LLMs) can go beyond generating text by selecting and executing external functions to perform specific tasks.
+- **Gemini Agent:** Understands user requests and decides when to call available Python functions.
+- **FastAPI Backend:** Exposes the agent and individual functions through HTTP endpoints.
+- **Portfolio Frontend:** Provides a web interface where visitors can interact with the chatbot.
 
-Features
+## Project Structure
 
-- LLM Integration: Uses Google's Gemini API for natural language understanding and response generation.
-- Function Calling: Allows Gemini to identify and call appropriate Python functions based on user requests.
-- Automatic Function Execution: Executes requested functions and provides their results back to Gemini.
-- Interactive Interface: Provides a conversational interface built with Gradio.
+```text
+first-agent/
+│
+├── docs/
+│   ├── index.html
+│   ├── profile.png
+│   ├── gmail.svg
+│   ├── github.svg
+│   └── linkedin.svg
+│
+├── backend/
+│   ├── api.py
+│   ├── app.py
+│   ├── function_agent.py
+│   └── requirements.txt
+│
+├── .gitignore
+└── .env
+```
 
-Available Functions
+## Available Python Functions
 
-The agent currently includes nine custom Python functions:
+The agent has nine predefined functions:
 
-1. "alxValue"
-2. "bpeEncode"
-3. "cipher"
-4. "decipher"
-5. "gridWalker"
-6. "isBalanced"
-7. "scoreword"
-8. "sortAscending"
-9. "daysToDeadline"
+1. `alxValue()` – Calculates an ASCII-based value and certification status.
+2. `bpeEncode()` – Performs a simplified Byte Pair Encoding process.
+3. `cipher()` – Encodes messages using a letter-shifting technique.
+4. `decipher()` – Generates possible decoded messages.
+5. `gridWalker()` – Analyses movement through a grid.
+6. `isBalanced()` – Checks whether brackets are balanced.
+7. `scoreword()` – Calculates a score based on repeated and unique letters.
+8. `sortAscending()` – Sorts characters in ascending order.
+9. `daysToDeadline()` – Calculates the time remaining until a deadline.
 
-Technologies Used
+## Technologies Used
 
 - Python
 - Google Gemini API
+- Google Gen AI SDK
+- FastAPI
 - Gradio
-- Hugging Face Spaces
+- Pydantic
+- HTML, CSS and JavaScript
+- Git and GitHub
 
-Project Structure
+## Running the Project Locally
 
-first-agent/
-│
-├── app.py
-├── function_agent.py
-├── requirements.txt
-├── README.md
-└── .gitignore
+### 1. Clone the repository
 
-How It Works
+```bash
+git clone https://github.com/ckkoranteng16-spec/first-agent.git
+cd first-agent
+```
 
-1. A user submits a message through the Gradio interface.
-2. The message is passed to the Gemini model.
-3. Gemini determines whether one of the available Python functions is needed.
-4. The requested function is executed automatically.
-5. The function result is returned to Gemini.
-6. Gemini generates a response for the user.
+### 2. Create and activate a virtual environment
 
-Installation
+```bash
+python -m venv .venv
+```
 
-Install the required dependencies:
+Windows:
 
-pip install -r requirements.txt
+```powershell
+.venv\Scripts\Activate.ps1
+```
 
-API Configuration
+### 3. Install dependencies
 
-This project requires a valid Gemini API key.
+```bash
+pip install -r backend/requirements.txt
+```
 
-Set the "GEMINI_API_KEY" environment variable before running the application.
+### 4. Configure your API key
 
-For Hugging Face Spaces, configure the key under:
+Create a `.env` file inside the `backend` folder:
 
-Settings → Secrets → New Secret
+```env
+GEMINI_API_KEY=your_api_key_here
+```
 
-Never commit API keys or other credentials to the repository.
+Never commit your API key to GitHub.
 
-Running Locally
+### 5. Run the FastAPI backend
 
-Start the Gradio application:
+```bash
+cd backend
+uvicorn api:app --reload
+```
 
-python app.py
+The API will be available at:
 
-Gradio will provide a local URL where the application can be accessed.
+`http://127.0.0.1:8000`
 
-Deployment
+Interactive API documentation:
 
-The application is configured for deployment on Hugging Face Spaces using the Gradio SDK.
+`http://127.0.0.1:8000/docs`
 
-Author
+## API Endpoints
 
-Developed as a practical project exploring Python, Large Language Models, and AI agent development.
+| Method | Endpoint | Purpose |
+|---|---|---|
+| GET | `/` | Check API status |
+| POST | `/chat` | Send a message to the Gemini agent |
+| POST | `/functions` | Execute a selected Python function |
+
+### Example Chat Request
+
+```json
+{
+  "message": "Encode HELLO using a shift of 3
