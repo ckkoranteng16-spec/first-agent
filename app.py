@@ -10,4 +10,4 @@ demo=gr.ChatInterface(
     description="Chat with my AI assistant."
 )
 
-demo.launch()#(server_name="0.0.0.0", server_port=int(os.environ.get("PORT", 10000)))
+demo.launch(share=True)#(server_name="0.0.0.0", server_port=int(os.environ.get("PORT", 10000)))

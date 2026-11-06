@@ -1,30 +1,23 @@
+
 import os
 from dotenv import load_dotenv
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 load_dotenv()
-api_key=os.getenv("GEMINI_API_KEY")
+
+api_key = os.getenv("GEMINI_API_KEY")
 
 if not api_key:
     raise ValueError("GEMINI_API_KEY is missing")
 
-genai.configure(api_key=api_key)
+# Create the Gemini client
+client = genai.Client(api_key=api_key)
 
-def functions(name,argument):
-    {
-        "alxValue":alxValue,
-        "bpeEncode":bpeEncode,
-        "cipher":cipher,
-        "decipher":decipher,
-        "gridWalker":gridWalker,
-        "isBalanced":isBalanced,
-        "scoreWord":scoreword,
-        "sortAscending":sortAscending,
-        "daysToDeadline":daysToDeadline
-    }
+MODEL = "gemini-3.8-flash"
 
 
-def alxValue(text):
+def alxValue(text: str) -> dict :
     """Calculate the ALX value of a string.
 
     Args:
@@ -52,7 +45,7 @@ def alxValue(text):
     }
 
 
-def bpeEncode(text, steps):
+def bpeEncode(text : str, steps: int)-> tuple :
     """Encode text using a simplified Byte Pair Encoding approach.
 
     Args:
@@ -118,7 +111,7 @@ def bpeEncode(text, steps):
     return text, swap
 
 
-def cipher(message, steps):
+def cipher(message :str , steps : int) -> list :
     """Encrypt a message using a Caesar-style letter shift.
 
     Args:
@@ -150,7 +143,7 @@ def cipher(message, steps):
     return "".join(encrypted)
 
 
-def decipher(message, steps):
+def decipher(message : str , steps : int) -> list:
     """Generate possible decoded messages for different shifts.
 
     Args:
@@ -188,7 +181,7 @@ def decipher(message, steps):
     return results
 
 
-def gridWalker(path):
+def gridWalker(path: str) -> dict:
     """Track movement through a two-dimensional grid.
 
     Args:
@@ -246,7 +239,7 @@ def gridWalker(path):
     }
 
 
-def isBalanced(text):
+def isBalanced(text:str) -> bool:
     """Check whether brackets in a string are correctly balanced.
 
     Args:
@@ -281,7 +274,7 @@ def isBalanced(text):
     return len(stack) == 0
 
 
-def scoreword(word):
+def scoreword(word:str) -> int:
     """Calculate a score based on word length and repeated letters.
 
     Args:
@@ -309,7 +302,7 @@ def scoreword(word):
     return points
 
 
-def sortAscending(text):
+def sortAscending(text:str) ->str:
     """Arrange characters in ascending Unicode order.
 
     Args:
@@ -356,7 +349,7 @@ def sortAscending(text):
     return newString
 
 
-def daysToDeadline(submission_day):
+def daysToDeadline(submission_day: str) ->dict:
     """Calculate the time remaining until a specified deadline.
 
     Args:
@@ -414,14 +407,28 @@ def daysToDeadline(submission_day):
 
 
 
-model = genai.GenerativeModel(
-    model_name="gemini-3.8-flash",
-    tools=[functions]
+# Register the custom functions as Gemini tools
+agent_tools = [
+    alxValue,
+    bpeEncode,
+    cipher,
+    decipher,
+    gridWalker,
+    isBalanced,
+    scoreword,
+    sortAscending,
+    daysToDeadline
+]
+
+# Create a chat session with automatic function calling
+chat = client.chats.create(
+    model=MODEL,
+    config=types.GenerateContentConfig(
+        tools=agent_tools
+    )
 )
 
-chat = model.start_chat(enable_automatic_function_calling=True)
-
 def run(user_message):
-    response=chat.send_message(user_message)
-    return response.text
+    response = chat.send_message(user_message)
+    return response.text or "I couldn't generate a response."
 
