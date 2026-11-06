@@ -1,6 +1,8 @@
 import gradio as gr
 from function_agent import run
 
+print('Hello, how may i help you?.')
+
 def chat(message,history):
     return run(message)
 
