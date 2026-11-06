@@ -1,0 +1,308 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me | Chris Koranteng</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: bisque;
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+        }
+
+        .profile-card {
+            width: 100%;
+            max-width: 550px;
+            padding: 35px;
+            border: 3px outset limegreen;
+            border-radius: 18px;
+            background-color: #fffaf2;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        #pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid limegreen;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 25px;
+            margin-bottom: 10px;
+            color: #263526;
+        }
+
+        .profession {
+            color: #55734d;
+            margin-bottom: 25px;
+        }
+
+        .details {
+            text-align: left;
+            line-height: 2;
+            overflow-wrap: anywhere;
+        }
+
+        .details strong {
+            color: #355c35;
+        }
+
+        #buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .iconBox {
+            width: 46px;
+            height: 46px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .iconBox:hover {
+            border-color: #888;
+            transform: translateY(-3px);
+        }
+
+        .iconBox img {
+            width: 22px;
+            height: 22px;
+        }
+
+        @media (max-width: 480px) {
+            .profile-card {
+                padding: 25px 20px;
+            }
+
+            h1 {
+                font-size: 21px;
+            }
+        }
+        
+.chat-card {
+    width: 100%;
+    max-width: 550px;
+    margin-top: 25px;
+    padding: 25px;
+    background: #fffaf2;
+    border: 2px solid limegreen;
+    border-radius: 18px;
+}
+
+.chat-card h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #263526;
+}
+
+#chatBox {
+    height: 300px;
+    overflow-y: auto;
+    padding: 12px;
+    background: #f5eadb;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.message {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    max-width: 85%;
+    overflow-wrap: anywhere;
+}
+
+.user-message {
+    background: #d5f5d5;
+    margin-left: auto;
+}
+
+.bot-message {
+    background: white;
+    margin-right: auto;
+}
+
+.chat-input {
+    display: flex;
+    gap: 8px;
+}
+
+#messageInput {
+    flex: 1;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid #aaa;
+    border-radius: 8px;
+}
+
+#sendButton {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    background: limegreen;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#sendButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+    </style>
+</head>
+
+<body>
+
+    <main class="profile-card">
+
+        <img id="pic" src="profile.png" alt="Chris's profile picture">
+
+        <h1>Chris Bram Kweku Koranteng</h1>
+
+        <p class="profession">Computer Science Student</p>
+
+        <div class="details">
+            <p><strong>GitHub:</strong> Phantom Geek</p>
+            <p><strong>Hobbies:</strong> Gaming, Coding, Reading Novels, Watching Anime</p>
+        </div>
+
+        <div id="buttons">
+
+            <a class="iconBox"
+               href="mailto:ckkoranteng16@gmail.com"
+               aria-label="Email me">
+                <img src="gmail.svg" alt="">
+            </a>
+
+            <a class="iconBox"
+               href="https://github.com/ckkoranteng16-spec"
+               target="_blank"
+               rel="noopener noreferrer"
+               aria-label="GitHub">
+                <img src="github.svg" alt="">
+            </a>
+
+            <a class="iconBox"
+               href="https://www.linkedin.com/in/chris-bram-k-5343683b8/"
+               target="_blank"
+               rel="noopener noreferrer"
+               aria-label="LinkedIn">
+                <img src="linkedin.svg" alt="">
+            </a>
+
+        </div>
+
+    </main>
+
+<section class="chat-card">
+
+    <h2>Chat with My AI Agent</h2>
+
+    <div id="chatBox" aria-live="polite">
+        <div class="message bot-message">
+            Hello! I'm Chris's AI assistant. How can I help?
+        </div>
+    </div>
+
+    <div class="chat-input">
+        <input
+            type="text"
+            id="messageInput"
+            placeholder="Type your message..."
+        >
+
+        <button id="sendButton" type="button">
+            Send
+        </button>
+    </div>
+
+</section>
+<script>
+const chatBox = document.getElementById("chatBox");
+const messageInput = document.getElementById("messageInput");
+const sendButton = document.getElementById("sendButton");
+
+function addMessage(message, className) {
+    const messageElement = document.createElement("div");
+
+    messageElement.classList.add("message", className);
+    messageElement.textContent = message;
+
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+async function sendMessage() {
+    const message = messageInput.value.trim();
+
+    if (!message || sendButton.disabled) return;
+
+    addMessage(message, "user-message");
+
+    messageInput.value = "";
+    sendButton.disabled = true;
+    sendButton.textContent = "Sending...";
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ message: message })
+        });
+
+        if (!response.ok) {
+            throw new Error("API request failed");
+        }
+
+        const data = await response.json();
+
+        addMessage(data.response, "bot-message");
+
+    } catch (error) {
+        addMessage(
+            "Sorry, I couldn't connect to the AI agent.",
+            "bot-message"
+        );
+    } finally {
+        sendButton.disabled = false;
+        sendButton.textContent = "Send";
+        messageInput.focus();
+    }
+}
+
+sendButton.addEventListener("click", sendMessage);
+
+messageInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+});
+</script>
+</body>
+</html>
